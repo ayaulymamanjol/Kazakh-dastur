@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Қазақтың салт-дәстүрлері</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Georgia", serif;
+            background: linear-gradient(to bottom, #f6e6c9, #d9b77c);
+            color: #3b2f1c;
+        }
+
+        header {
+            background-color: #8b5a2b;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 32px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .card {
+            background: #fff3dc;
+            border: 3px solid #8b5a2b;
+            border-radius: 20px;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            background: #f3d9a4;
+        }
+
+        .card h2 {
+            margin: 10px 0 0 0;
+            font-size: 20px;
+            color: #5a3e1b;
+        }
+
+        .content {
+            display: none;
+            padding: 30px;
+            background: #fffaf0;
+            border-top: 5px solid #8b5a2b;
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 20px auto;
+            border-radius: 15px;
+        }
+
+        .content img {
+            max-width: 100%;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+   footer {
+    background: #8b5e3c;
+    color: white;
+    text-align: center;
+    padding: 25px 0;
+    font-size: 16px;
+}
+
+.fixed-btn {
+    position: fixed;
+    bottom: 20px;          padding: 15px 35px;
+    font-size: 18px;
+    background: #8b5e3c;
+    color:  #fffaf0;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.fixed-btn:hover {
+    background:#8b5e3c;
+    transform: scale(1.05);
+}
+
+
+.first-btn {
+    left: 20px;
+}
+
+
+.second-btn {
+    right: 20px;
+}
+
+
+
+
+    </style>
+    <script>
+        const traditions = {
+            "Беташар": {
+                img: "betashar.jpg",
+                text: "Беташар — келіннің бетін ашып, оны жаңа әулетке таныстыру дәстүрі. Бұл рәсім отбасының бірлігін нығайтып, қонақтарға қыздың келуін ресми түрде хабарлайды."
+            },
+            "Тұсаукесер": {
+                img: "tusaukeser.jpg",
+                text: "Тұсаукесер — бала алғаш қадам басқанда тұсауын кесу рәсімі. Бұл рәсім баланың өмір жолын аман және дұрыс болуына деген тілек ретінде маңызды."
+            },
+            "Шілдехана": {
+                img: "shildehana.jpg",
+                text: "Шілдехана — нәрестенің дүниеге келуіне арналған мереке. Қауымдастықты арттырады және жаңа өмірге қуаныш әкеледі."
+            },
+            "Бесікке салу": {
+                img: "besik.jpg",
+                text: "Бесікке салу — нәрестені алғаш рет бесікке бөлеу дәстүрі. Бұл рәсім баланың денсаулығы мен бақытына тілек болып табылады."
+            },
+            "Сүндет той": {
+                img: "sundet.jpg",
+                text: "Сүндет той — ұл баланы сүндетке отырғызу рәсімі. Бұл қазақ мәдениетінде маңызды дәстүр, қоғамдағы бірлік пен құрметтің белгісі."
+            },
+            "Құда түсу": {
+                img: "kuda.jpg",
+                text: "Құда түсу — екі отбасының ресми түрде құдандалы болуы. Бұл дәстүр туыстық байланыстарды күшейтеді."
+            },
+            "Сыңсу": {
+                img: "synsu.jpg",
+                text: "Сыңсу — қыз ұзатыларда айтылатын қоштасу әні. Қызға деген тілек пен батасын білдіреді."
+            },
+            "Жар-жар": {
+                img: "zharzhar.jpg",
+                text: "Жар-жар — үйлену тойында айтылатын дәстүрлі өлең-жыр. Бұл дәстүр жастарға бақыт пен береке тілеуге арналған."
+            },
+            "Асар": {
+                img: "asar.jpg",
+                text: "Асар — ауыл тұрғындарының бір-біріне тегін көмек көрсету дәстүрі. Бірлікті нығайтып, қауымдық рухты арттырады."
+            },
+            "Енші беру": {
+                img: "enshi.jpg",
+                text: "Енші беру — жас отбасына жеке мал-мүлік бөліп беру дәстүрі. Бұл дәстүр отбасылық тәуелсіздікті қолдайды."
+            },
+            "Сарқыт": {
+                img: "sarkyt.jpg",
+                text: "Сарқыт — қонақтан қалған тағамды үйге алып келу салты. Қонақжайлылық пен сыйластықты көрсетеді."
+            },
+            "Ерулік": {
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Erulik.jpg/320px-Erulik.jpg",
+                text: "Ерулік — жаңа көшіп келген көршілерге берілетін қонақасы. Жаңа байланыстар мен достықты нығайтады."
+            },
+            "Шашу": {
+                img: "shashu.jpg",
+                text: "Шашу — қуаныш кезінде тәтті немесе тиын шашу дәстүрі. Мерекелік қуаныштың символы."
+            },
+            "Байғазы": {
+                img: "baigazy.jpg",
+                text: "Байғазы — жаңа зат алған адамға берілетін сыйлық. Құрмет пен батаны білдіреді."
+            },
+            "Жылу жинау": {
+                img: "zhylu.jpg",
+                text: "Жылу жинау — қиын жағдайға тап болған адамдарға көмек жинау дәстүрі. Қауымдық жауапкершілікті арттырады."
+            },
+            "Көңіл айту": {
+                img: "konil.jpg",
+                text: "Көңіл айту — қайғыға ортақтасып, жұбату білдіру. Қоғамдағы сыйластық пен мейірімділікті көрсетеді."
+            },
+            "Ант беру": {
+                img: "ant.jpg",
+                text: "Ант беру — серт беру, уәде ету дәстүрі. Сенім мен адалдықты нығайтады."
+            },
+            "Сауын айту": {
+                img: "sauyn.jpg",
+                text: "Сауын айту — үлкен той немесе жиынға алдын ала шақыру дәстүрі. Қауымдастыққа шақырады."
+            },
+            "Айтыс": {
+                img: "aytys.jpg",
+                text: "Айтыс — ақындардың суырыпсалма өлеңмен жарысуы. Қазақ поэзиясының маңызды дәстүрі."
+            },
+            "Наурыз": {
+                img: "nauryz.jpg",
+                text: "Наурыз — көктемгі жаңару мерекесі, қазақтың жаңа жылы. Бақыт, денсаулық және молшылық символы."
+            },
+            "Аластау": {
+                img: "alastau.jpg",
+                text: "Аластау — жамандықтан тазарту үшін от пен түтін қолдану рәсімі. Қауіптен қорғау және тазалық символы."
+            }
+        };
+
+        function showText(name) {
+            const tradition = traditions[name];
+            const contentDiv = document.getElementById("info");
+            contentDiv.style.display = "block";
+            contentDiv.innerHTML = `<h2>${name}</h2><img src="${tradition.img}" alt="${name}"><p>${tradition.text}</p>`;
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    Қазақтың салт-дәстүрлері
+</header>
+
+<div class="container">
+    <div class="card" onclick="showText('Беташар')"><h2>Беташар</h2></div>
+    <div class="card" onclick="showText('Тұсаукесер')"><h2>Тұсаукесер</h2></div>
+    <div class="card" onclick="showText('Шілдехана')"><h2>Шілдехана</h2></div>
+    <div class="card" onclick="showText('Бесікке салу')"><h2>Бесікке салу</h2></div>
+    <div class="card" onclick="showText('Сүндет той')"><h2>Сүндет той</h2></div>
+    <div class="card" onclick="showText('Құда түсу')"><h2>Құда түсу</h2></div>
+    <div class="card" onclick="showText('Сыңсу')"><h2>Сыңсу</h2></div>
+    <div class="card" onclick="showText('Жар-жар')"><h2>Жар-жар</h2></div>
+    <div class="card" onclick="showText('Асар')"><h2>Асар</h2></div>
+    <div class="card" onclick="showText('Енші беру')"><h2>Енші беру</h2></div>
+    <div class="card" onclick="showText('Сарқыт')"><h2>Сарқыт</h2></div>
+    <div class="card" onclick="showText('Ерулік')"><h2>Ерулік</h2></div>
+    <div class="card" onclick="showText('Шашу')"><h2>Шашу</h2></div>
+    <div class="card" onclick="showText('Байғазы')"><h2>Байғазы</h2></div>
+    <div class="card" onclick="showText('Жылу жинау')"><h2>Жылу жинау</h2></div>
+    <div class="card" onclick="showText('Көңіл айту')"><h2>Көңіл айту</h2></div>
+    <div class="card" onclick="showText('Ант беру')"><h2>Ант беру</h2></div>
+    <div class="card" onclick="showText('Сауын айту')"><h2>Сауын айту</h2></div>
+    <div class="card" onclick="showText('Айтыс')"><h2>Айтыс</h2></div>
+    <div class="card" onclick="showText('Наурыз')"><h2>Наурыз</h2></div>
+    <div class="card" onclick="showText('Аластау')"><h2>Аластау</h2></div>
+
+</div>
+
+<div id="info" class="content"></div>
+
+<footer>
+        © Қазақ мәдениеті
+ 
+</footer>
+<a href="bilim.html" class="fixed-btn second-btn">Тексер</a>
+<a href="soiletdastur.html" class="fixed-btn first-btn">Артқа</a>
+
+
+
+</body>
+</html>

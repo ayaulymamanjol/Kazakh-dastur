@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<title>Интерактивті сәйкестендіру</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Georgia, serif;
+    background: #f6e6c9;
+    color: #3b2f1c;
+}
+
+header {
+    background: #8b5a2b;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-size: 34px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 40px auto;
+    position: relative;
+}
+
+.column {
+    width: 40%;
+}
+
+.item {
+    background: #fff3dc;
+    border: 3px solid #8b5a2b;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.item:hover {
+    background: #f3d9a4;
+}
+
+.selected {
+    background: #cfa96b !important;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.btn {
+    display: block;
+    margin: 30px auto;
+    padding: 18px 40px;
+    font-size: 22px;
+    background: #8b5a2b;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+ .fixed-btn {
+    position: fixed;
+    bottom: 20px;          padding: 15px 35px;
+    font-size: 18px;
+    background: #f5deb3;
+    color: #4a2c1a;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.fixed-btn:hover {
+    background: #ffe4b5;
+    transform: scale(1.05);
+}
+
+
+.left-btn {
+    left: 20px;
+}
+
+
+.result {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Салт-дәстүрлерді сәйкестендір</header>
+
+<div class="wrapper">
+    <canvas id="lines"></canvas>
+
+       <div class="column" id="names">
+        <div class="item" data-id="betashar">Құда түсу</div>
+        <div class="item" data-id="tusau">Байғазы</div>
+        <div class="item" data-id="asar">Шашу</div>
+        <div class="item" data-id="besik">Көңіл айту</div>
+        <div class="item" data-id="aytys">Айтыс</div>
+    </div>
+
+    <div class="column" id="defs">
+        <div class="item" data-id="aytys">Ақындардың суырыпсалма өлеңмен жарысуы</div>
+        <div class="item" data-id="asar">Қуаныш кезінде тәтті, ақша шашу дәстүрі</div>
+        <div class="item" data-id="besik">Қайғылы жағдайда жұбату дәстүрі</div>
+        <div class="item" data-id="betashar">Екі жақтың некеге келісу рәсімі</div>
+        <div class="item" data-id="tusau">Жаңа зат алған балаға берілетін сый</div>
+
+    </div>
+</div>
+<button class="btn" onclick="check()">Тексеру</button>
+<div class="result" id="result"></div>
+
+<script>
+let selectedLeft = null;
+let connections = [];
+
+const canvas = document.getElementById("lines");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    const wrap = document.querySelector(".wrapper");
+    canvas.width = wrap.offsetWidth;
+    canvas.height = wrap.offsetHeight;
+}
+resizeCanvas();
+window.onresize = resizeCanvas;
+
+document.querySelectorAll("#names .item").forEach(item => {
+    item.onclick = () => {
+        selectedLeft = item;
+        document.querySelectorAll(".item").forEach(i => i.classList.remove("selected"));
+        item.classList.add("selected");
+    };
+});
+
+document.querySelectorAll("#defs .item").forEach(item => {
+    item.onclick = () => {
+        if (!selectedLeft) return;
+
+        connections = connections.filter(c => c.left !== selectedLeft);
+        connections.push({ left: selectedLeft, right: item });
+        selectedLeft.classList.remove("selected");
+        selectedLeft = null;
+        drawLines();
+    };
+});
+
+function drawLines() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    connections.forEach(c => {
+        const r1 = c.left.getBoundingClientRect();
+        const r2 = c.right.getBoundingClientRect();
+        const wrap = document.querySelector(".wrapper").getBoundingClientRect();
+
+        ctx.beginPath();
+        ctx.moveTo(r1.right - wrap.left, r1.top + r1.height/2 - wrap.top);
+        ctx.lineTo(r2.left - wrap.left, r2.top + r2.height/2 - wrap.top);
+        ctx.strokeStyle = "#8b5a2b";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+    });
+}
+
+function check() {
+    let correct = 0;
+    let wrong = [];
+
+    connections.forEach(c => {
+        if (c.left.dataset.id === c.right.dataset.id) correct++;
+        else wrong.push(c.left.innerText);
+    });
+
+    let text = `Дұрыс сәйкестендіру: ${correct} / 4`;
+    if (wrong.length > 0) {
+        text += `<br>❌ Қате кеткен дәстүрлер: ${wrong.join(", ")}<br>
+        👉 Каталогтан қайта оқуға кеңес беріледі.`;
+    } else {
+        text += "<br>🎉 Өте жақсы! Барлығы дұрыс!";
+    }
+
+    document.getElementById("result").innerHTML = text;
+}
+</script>
+<a href="newdastur.html" class="fixed-btn left-btn">Басты бетке</a>
+
+</body>
+</html>
